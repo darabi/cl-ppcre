@@ -1,5 +1,4 @@
 ;;; -*- Mode: LISP; Syntax: COMMON-LISP; Package: CL-USER; Base: 10 -*-
-;;; $Header: /usr/local/cvsrep/cl-ppcre/cl-ppcre.asd,v 1.49 2009/10/28 07:36:15 edi Exp $
 
 ;;; This ASDF system definition was kindly provided by Marco Baringer.
 
@@ -29,46 +28,13 @@
 ;;; NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;;; SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-(in-package :cl-user)
-
-(defpackage :cl-ppcre-asd
-  (:use :cl :asdf))
-
-(in-package :cl-ppcre-asd)
-
-(defsystem :cl-ppcre
-  :version "2.0.11"
-  :description "Perl-compatible regular expression library"
+(defsystem :cl-ppcre-test
+  :description "Perl-compatible regular expression library tests"
   :author "Dr. Edi Weitz"
   :license "BSD"
-  :serial t
-  :components ((:file "packages")
-               (:file "specials")
-               (:file "util")
-               (:file "errors")
-               (:file "charset")
-               (:file "charmap")
-               (:file "chartest")
-               #-:use-acl-regexp2-engine
-               (:file "lexer")
-               #-:use-acl-regexp2-engine
-               (:file "parser")
-               #-:use-acl-regexp2-engine
-               (:file "regex-class")
-               #-:use-acl-regexp2-engine
-               (:file "regex-class-util")
-               #-:use-acl-regexp2-engine
-               (:file "convert")
-               #-:use-acl-regexp2-engine
-               (:file "optimize")
-               #-:use-acl-regexp2-engine
-               (:file "closures")
-               #-:use-acl-regexp2-engine
-               (:file "repetition-closures")
-               #-:use-acl-regexp2-engine
-               (:file "scanner")
-               (:file "api")))
-
-(defmethod perform ((o test-op) (c (eql (find-system :cl-ppcre))))
-  (operate 'load-op :cl-ppcre-test)
-  (funcall (intern (symbol-name :run-all-tests) (find-package :cl-ppcre-test))))
+  :depends-on (:cl-ppcre :flexi-streams)
+  :components ((:module "test"
+                        :serial t
+                        :components ((:file "packages")
+                                     (:file "tests")
+                                     (:file "perl-tests")))))
